@@ -21,7 +21,7 @@ GENRE_CHOICES = [
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
-    profile_picture = models.ImageField(upload_to='profile_pics/', blank=True, null=True)
+    profile_picture = models.URLField(blank=True, null=True)
     favorite_genre = models.CharField(max_length=20, choices=GENRE_CHOICES, blank=True)
     preferred_criteria = models.CharField(max_length=20, choices=CRITERIA_CHOICES, default='Melody')
 

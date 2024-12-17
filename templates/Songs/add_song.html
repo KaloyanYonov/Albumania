@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block title %}Add Song{% endblock %}
+
+{% block content %}
+<h1>Add Song to "{{ album.title }}"</h1>
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Add Song</button>
+    <a href="{% url 'album_detail' album.pk %}" class="btn btn-secondary">Cancel</a>
+</form>
+{% endblock %}

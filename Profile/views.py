@@ -12,8 +12,8 @@ def register(request):
         if form.is_valid():
             user = form.save()
             messages.success(request, "Your account has been created! You can now log in.")
-            login(request, user)  # Automatically log in the user after registration
-            return redirect('profile_dashboard')  # Redirect to their dashboard
+            login(request, user)  
+            return redirect('profile_dashboard')  
     else:
         form = ProfileCreationForm()
     return render(request, 'Profile/register.html', {'form': form})
@@ -22,16 +22,16 @@ def register(request):
 
 @login_required
 def edit_profile(request):
-    profile = request.user.profile  # Access the Profile model via the related user
+    profile = request.user.profile  
     if request.method == 'POST':
         form = ProfileUpdateForm(request.POST, request.FILES, instance=profile)
         if form.is_valid():
             form.save()
             messages.success(request, "Your profile has been updated!")
-            return redirect('profile_dashboard')  # Redirect back to the profile dashboard
+            return redirect('profile_dashboard')
     else:
         form = ProfileUpdateForm(instance=profile)
-    return render(request, 'edit_profile.html', {'form': form})
+    return render(request, 'Profile/edit_profile.html', {'form': form})
 
 
 @login_required

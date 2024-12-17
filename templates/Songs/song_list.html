@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}Songs in {{ album.title }}{% endblock %}
+
+{% block content %}
+<h1>Songs in "{{ album.title }}"</h1>
+<ul>
+    {% for song in songs %}
+    <li>{{ song.title }} - {{ song.duration }} seconds (Released: {{ song.release_date }})</li>
+    {% empty %}
+    <li>No songs added yet.</li>
+    {% endfor %}
+</ul>
+<a href="{% url 'add_song' album.pk %}" class="btn btn-success">Add New Song</a>
+{% endblock %}

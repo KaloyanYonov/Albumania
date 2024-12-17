@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}Add Album{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Add a New Album</h1>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Add Album</button>
+        <a href="{% url 'album_list' %}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+{% endblock %}
