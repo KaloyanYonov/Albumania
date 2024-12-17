@@ -1,44 +1,40 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import login, logout, authenticate
+from django.contrib import messages
+from django.contrib.auth import login
+from .forms import ProfileCreationForm,ProfileUpdateForm
 from django.contrib.auth.decorators import login_required
-import Profile
-from .formss import UserRegistrationForm, ProfileUpdateForm
 
-def user_login(request):
-    if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
-        user = authenticate(request, username=username, password=password)
-        if user is not None:
-            login(request, user)
-            return redirect('Profile')
-        else:
-            return render(request, 'Profile/login.html', {'error': 'Invalid credentials'})
-    return render(request, 'Profile/login.html')
 
-def user_logout(request):
-    logout(request)
-    return redirect('login')
 
 def register(request):
     if request.method == 'POST':
-        form = UserRegistrationForm(request.POST)
+        form = ProfileCreationForm(request.POST, request.FILES)
         if form.is_valid():
-            user = form.save(commit=False)
-            user.set_password(form.cleaned_data['password'])
-            user.save()
-            Profile.objects.create(user=user)
-            return redirect('login')
+            user = form.save()
+            messages.success(request, "Your account has been created! You can now log in.")
+            login(request, user)  # Automatically log in the user after registration
+            return redirect('profile_dashboard')  # Redirect to their dashboard
     else:
-        form = UserRegistrationForm()
+        form = ProfileCreationForm()
     return render(request, 'Profile/register.html', {'form': form})
 
+
+
 @login_required
-def user_profile(request):
+def edit_profile(request):
+    profile = request.user.profile  # Access the Profile model via the related user
     if request.method == 'POST':
-        form = ProfileUpdateForm(request.POST, instance=request.user.profile)
+        form = ProfileUpdateForm(request.POST, request.FILES, instance=profile)
         if form.is_valid():
             form.save()
+            messages.success(request, "Your profile has been updated!")
+            return redirect('profile_dashboard')  # Redirect back to the profile dashboard
     else:
-        form = ProfileUpdateForm(instance=request.user.profile)
-    return render(request, 'Profile/profile.html', {'form': form})
+        form = ProfileUpdateForm(instance=profile)
+    return render(request, 'edit_profile.html', {'form': form})
+
+
+@login_required
+def profile_dashboard(request):
+    profile = request.user.profile
+    return render(request, 'Profile/profile_dashboard.html', {'profile': profile})
