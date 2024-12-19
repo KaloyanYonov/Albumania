@@ -22,9 +22,9 @@ from django.views.generic import TemplateView
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('profile/', include('Profile.urls')),
-    path('login/', include('django.contrib.auth.urls')),
-    path('logout/', LogoutView.as_view(next_page='register'), name='logout'),
     path('albums/', include('Albums.urls')),
     path('songs/', include('Songs.urls')),
     path('', include('Web.urls')),
+    path('ranking/', include('Ranking.urls')),
+
 ]

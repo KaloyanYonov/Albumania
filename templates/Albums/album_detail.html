@@ -1,34 +1,24 @@
 {% extends 'base.html' %}
 
-{% block title %}{{ album.name }} Details{% endblock %}
+{% block title %}Album Details{% endblock %}
 
 {% block content %}
 <div class="container">
     <h1>{{ album.name }}</h1>
     <p><strong>Artist:</strong> {{ album.artist }}</p>
-    <p><strong>Release Date:</strong> {{ album.release_date }}</p>
     <p><strong>Genre:</strong> {{ album.genre }}</p>
+    <p><strong>Release Date:</strong> {{ album.release_date }}</p>
+    <p><strong>Score:</strong> {{ album.final_score }}</p>
 
-    {% if album.cover_image %}
-        <img src="{{ album.cover_image.url }}" class="img-fluid mb-4" alt="{{ album.name }}">
-    {% endif %}
-
-    {% if user.is_authenticated and user == album.created_by %}
-        <a href="{% url 'edit_album' album.pk %}" class="btn btn-warning">Edit Album</a>
-        <a href="{% url 'delete_album' album.pk %}" class="btn btn-danger">Delete Album</a>
-        <a href="{% url 'album_list' %}" class="btn btn-secondary">Back to Albums</a>
-
-    {% endif %}
-    <h2>Songs in this Album:</h2>
-    <ul>
+    <h2>Songs</h2>
+    <ul class="list-group">
         {% for song in songs %}
-            <li>{{ song.title }} - {{ song.duration }} seconds (Released: {{ song.release_date }})</li>
-        {% empty %}
-            <li>No songs added to this album yet.</li>
+        <li class="list-group-item">
+            <a href="{% url 'song_detail' song.pk %}">{{ song.title }}</a>
+        </li>
         {% endfor %}
     </ul>
-    
-    <a href="{% url 'add_song' album.pk %}" class="btn btn-primary">Add a Song</a>
-    
+
+    <a href="{% url 'rank_album' album.pk %}" class="btn btn-primary mt-3">Rank Album</a>
 </div>
 {% endblock %}

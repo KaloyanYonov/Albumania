@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}Song Details{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>{{ song.title }}</h1>
+    <p><strong>Album:</strong> {{ song.album.name }}</p>
+    <p><strong>Duration:</strong> {{ song.duration }} seconds</p>
+    {% if song.lyrics %}
+        <p><strong>Lyrics:</strong></p>
+        <pre>{{ song.lyrics }}</pre>
+    {% else %}
+        <p><em>No lyrics available.</em></p>
+    {% endif %}
+    <p><strong>Score:</strong> {{ final_score }}</p>
+    <a href="{% url 'edit_song' song.pk %}" class="btn btn-warning">Edit</a>
+    <a href="{% url 'delete_song' song.pk %}" class="btn btn-danger">Delete</a>
+    <a href="{% url 'rank_song' song.pk %}" class="btn btn-primary">Rank Song</a>
+    <a href="{% url 'album_detail' song.album.pk %}" class="btn btn-secondary">Back to Album</a>
+</div>
+{% endblock %}

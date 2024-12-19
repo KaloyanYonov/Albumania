@@ -8,6 +8,11 @@ from Songs.models import Song
 
 def album_list(request):
     albums = Albums.objects.all()
+    for album in albums:
+        if request.user.is_authenticated:
+            album.final_score = album.get_final_score(request.user)
+        else:
+            album.final_score = "N/A"
     return render(request, 'Albums/album_list.html', {'albums': albums})
 
 

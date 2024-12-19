@@ -12,13 +12,24 @@
                 <div class="col-md-4 mb-4">
                     <div class="card h-100 shadow-sm">
                         {% if album.cover_image %}
-                            <img src="{{ album.cover_image.url }}" class="card-img-top" alt="{{ album.name }}">
+                            <img  src="{{ album.cover_image }}" alt="{{ album.name }}" class="album-cover">
+                        {% else %}
+                            <p>No album cover available.</p>
                         {% endif %}
                         <div class="card-body">
-                            <h5 class="card-title">{{ album.name }}</h5>
+                            <h3 class="card-title">{{ album.name }}</h3>
                             <p class="card-text">By {{ album.artist }}</p>
                             <p class="card-text"><small>Released on {{ album.release_date }}</small></p>
                             <a href="{% url 'album_detail' album.pk %}" class="btn btn-primary">View Details</a>
+                            <a href="{% url 'edit_album' album.pk %}" class="btn btn-primary">Edit</a>
+                            <a href="{% url 'delete_album' album.pk %}" class="btn btn-primary">Delete</a>
+
+                            
+
+                        </div>
+                        <div>
+                            <h3>{{ album.name }}</h3>
+                            <p>Score: {{ album.final_score }}</p>
                         </div>
                     </div>
                 </div>

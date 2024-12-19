@@ -3,14 +3,14 @@
 {% block title %}Home - Albumania{% endblock %}
 
 {% block content %}
-<div class="text-center">
-    <h1>Welcome to Albumania</h1>
-    <p>Rank albums and songs based on your preferences.</p>
+<div class="welcome-section">
+    <h1 class="welcome-title">Welcome to Albumania</h1>
+    <p class="welcome-text">Rank albums and songs based on your preferences.</p>
 
     {% if not user.is_authenticated %}
-        <a href="{% url 'register' %}" class="btn btn-primary mt-3">Get Started</a>
+        <a href="{% url 'register' %}" class="button button-primary">Get Started</a>
     {% else %}
-        <a href="{% url 'profile_dashboard' %}" class="btn btn-success mt-3">Go to Your Dashboard</a>
+        <a href="{% url 'profile_dashboard' %}" class="button button-success">Go to Your Dashboard</a>
     {% endif %}
 </div>
 {% endblock %}

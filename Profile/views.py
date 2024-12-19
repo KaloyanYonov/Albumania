@@ -3,7 +3,8 @@ from django.contrib import messages
 from django.contrib.auth import login
 from .forms import ProfileCreationForm,ProfileUpdateForm
 from django.contrib.auth.decorators import login_required
-
+from django.contrib.auth import logout
+from django.contrib.auth.forms import AuthenticationForm
 
 
 def register(request):
@@ -38,3 +39,23 @@ def edit_profile(request):
 def profile_dashboard(request):
     profile = request.user.profile
     return render(request, 'Profile/profile_dashboard.html', {'profile': profile})
+
+
+
+def custom_logout(request):
+    logout(request)  # Logs out the user
+    return redirect('home')  # Redirects to the home page
+
+
+def custom_login(request):
+    if request.method == 'POST':
+        form = AuthenticationForm(data=request.POST)
+        if form.is_valid():
+            user = form.get_user()
+            login(request, user)
+            return redirect('home')  # Replace 'home' with your desired redirect URL
+        else:
+            messages.error(request, "Invalid username or password.")
+    else:
+        form = AuthenticationForm()
+    return render(request, 'Profile/login.html', {'form': form})
