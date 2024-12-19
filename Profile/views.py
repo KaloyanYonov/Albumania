@@ -5,7 +5,9 @@ from .forms import ProfileCreationForm,ProfileUpdateForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from django.contrib.auth.forms import AuthenticationForm
-
+from django.views.generic import ListView, TemplateView
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from .models import Profile
 
 def register(request):
     if request.method == 'POST':
@@ -43,8 +45,8 @@ def profile_dashboard(request):
 
 
 def custom_logout(request):
-    logout(request)  # Logs out the user
-    return redirect('home')  # Redirects to the home page
+    logout(request)
+    return redirect('home') 
 
 
 def custom_login(request):
@@ -53,9 +55,35 @@ def custom_login(request):
         if form.is_valid():
             user = form.get_user()
             login(request, user)
-            return redirect('home')  # Replace 'home' with your desired redirect URL
+            return redirect('home') 
         else:
             messages.error(request, "Invalid username or password.")
     else:
         form = AuthenticationForm()
     return render(request, 'Profile/login.html', {'form': form})
+
+
+class StaffRequiredMixin(UserPassesTestMixin):
+    def test_func(self):
+            return self.request.user.groups.filter(name="Staff").exists()
+
+class SuperuserRequiredMixin(UserPassesTestMixin):
+    def test_func(self):
+        return self.request.user.is_superuser
+
+class StaffOnlyView(LoginRequiredMixin, StaffRequiredMixin, ListView):
+    model = Profile
+    template_name = 'Profile/staff_view.html'
+    context_object_name = 'profiles'
+
+    def get_queryset(self):
+        return Profile.objects.filter(preferred_criteria='Melody')
+
+
+class SuperuserOnlyView(LoginRequiredMixin, SuperuserRequiredMixin, TemplateView):
+    template_name = 'Profile/superuser_view.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['total_profiles'] = Profile.objects.count()
+        return context

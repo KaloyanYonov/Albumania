@@ -18,14 +18,18 @@
             <div class="menu collapse" id="navbarNav">
                 <ul class="nav-list">
                     <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
-
                     {% if user.is_authenticated %}
+                        {% if is_superuser %}
+                            <li class="nav-item"><a class="nav-link" href="{% url 'superuser_view' %}">Superuser View</a></li>
+                        {% endif %}
+                        {% if is_staff %}
+                            <li class="nav-item"><a class="nav-link" href="{% url 'staff_view' %}">Staff View</a></li>
+                        {% endif %}
+                        
                         <li class="nav-item"><a class="nav-link" href="{% url 'profile_dashboard' %}">My Profile</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{% url 'album_list'%}">My Albums</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{% url 'add_album'%}">Create Album</a></li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'custom_logout' %}">Logout</a>
-                        </li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'album_list' %}">My Albums</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'add_album' %}">Create Album</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'custom_logout' %}">Logout</a></li>
                     {% else %}
                         <li class="nav-item"><a class="nav-link" href="{% url 'register' %}">Create Profile</a></li>
                         <li class="nav-item"><a class="nav-link" href="{% url 'custom_login' %}">Login</a></li>

@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block title %}Staff Dashboard{% endblock %}
+
+{% block content %}
+<h1>Staff Dashboard</h1>
+<p>Welcome to the Staff Dashboard!</p>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Username</th>
+            <th>Favorite Genre</th>
+            <th>Preferred Criteria</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for profile in profiles %}
+            <tr>
+                <td>{{ profile.user.username }}</td>
+                <td>{{ profile.favorite_genre }}</td>
+                <td>{{ profile.preferred_criteria }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

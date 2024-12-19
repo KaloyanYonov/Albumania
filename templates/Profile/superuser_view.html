@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block title %}Superuser Dashboard{% endblock %}
+
+{% block content %}
+<h1>Superuser Dashboard</h1>
+<p>Welcome, Superuser!</p>
+
+<ul>
+    <li>Total Profiles: {{ total_profiles }}</li>
+</ul>
+
+<p>Use the admin panel for full control.</p>
+<a href="/admin/" class="btn btn-primary">Go to Admin Panel</a>
+{% endblock %}
